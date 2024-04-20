@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "common-sdl.h"
 
 audio_async::audio_async(int len_ms) {
@@ -164,7 +165,7 @@ void audio_async::callback(uint8_t * stream, int len) {
             memcpy(&m_audio[m_audio_pos], stream, n_samples * sizeof(float));
 
             m_audio_pos = (m_audio_pos + n_samples) % m_audio.size();
-            m_audio_len = std::min(m_audio_len + n_samples, m_audio.size());
+            m_audio_len = min(m_audio_len + n_samples, m_audio.size());
         }
     }
 }

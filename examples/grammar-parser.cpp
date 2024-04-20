@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "grammar-parser.h"
 #include <cstdint>
 #include <cwchar>

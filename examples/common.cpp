@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #define _USE_MATH_DEFINES // for M_PI
 
 #include "common.h"
@@ -455,7 +457,7 @@ gpt_vocab::id gpt_sample_top_k_top_p(
 
     double maxl = -INFINITY;
     for (const auto & kv : logits_id) {
-        maxl = std::max(maxl, kv.first);
+        maxl = max(maxl, kv.first);
     }
 
     // compute probs for the top K tokens
@@ -570,7 +572,7 @@ gpt_vocab::id gpt_sample_top_k_top_p_repeat(
 
     double maxl = -INFINITY;
     for (const auto & kv : logits_id) {
-        maxl = std::max(maxl, kv.first);
+        maxl = max(maxl, kv.first);
     }
 
     // compute probs for the top K tokens
@@ -797,14 +799,14 @@ float similarity(const std::string & s0, const std::string & s1) {
     for (size_t i = 0; i < len0; i++) {
         col[0] = i;
         for (size_t j = 1; j < len1; j++) {
-            col[j] = std::min(std::min(1 + col[j - 1], 1 + prevCol[j]), prevCol[j - 1] + (i > 0 && s0[i - 1] == s1[j - 1] ? 0 : 1));
+            col[j] = min(min(1 + col[j - 1], 1 + prevCol[j]), prevCol[j - 1] + (i > 0 && s0[i - 1] == s1[j - 1] ? 0 : 1));
         }
         col.swap(prevCol);
     }
 
     const float dist = prevCol[len1 - 1];
 
-    return 1.0f - (dist / std::max(s0.size(), s1.size()));
+    return 1.0f - (dist / max(s0.size(), s1.size()));
 }
 
 bool sam_params_parse(int argc, char ** argv, sam_params & params) {
@@ -868,7 +870,7 @@ std::string to_timestamp(int64_t t, bool comma) {
 }
 
 int timestamp_to_sample(int64_t t, int n_samples, int whisper_sample_rate) {
-    return std::max(0, std::min((int) n_samples - 1, (int) ((t*whisper_sample_rate)/100)));
+    return max(0, min((int) n_samples - 1, (int) ((t*whisper_sample_rate)/100)));
 }
 
 bool is_file_exist(const char *fileName)
